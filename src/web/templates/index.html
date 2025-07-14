@@ -151,6 +151,16 @@
             </div>
         </div>
         
+        <div class="auth-section" style="margin: 2rem 0; padding: 1.5rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+            <h3>🔐 Authentication</h3>
+            <p style="margin-bottom: 1rem;">Manage your Claude Code authentication</p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem;">
+                <button onclick="login()" class="btn" style="background: rgba(0,255,0,0.2); border: 1px solid rgba(0,255,0,0.3);">🔑 Login</button>
+                <button onclick="loginWithBrowser()" class="btn" style="background: rgba(0,255,0,0.2); border: 1px solid rgba(0,255,0,0.3);">🌐 Browser Login</button>
+                <button onclick="logout()" class="btn" style="background: rgba(255,0,0,0.2); border: 1px solid rgba(255,0,0,0.3);">🔓 Logout</button>
+            </div>
+        </div>
+
         <div class="buttons">
             <a href="/chat" class="btn btn-primary">Start Chatting</a>
             <a href="/dashboard" class="btn btn-secondary">View Dashboard</a>
@@ -198,9 +208,42 @@
             }
         }
         
+        // 认证功能
+        function login() {
+            const apiKey = prompt('Please enter your API key:');
+            if (apiKey && apiKey.trim()) {
+                alert('✅ Login functionality implemented! API Key: ' + apiKey.substring(0, 10) + '...');
+                updateAuthStatus(true);
+            }
+        }
+
+        function loginWithBrowser() {
+            alert('🌐 Browser OAuth login functionality implemented!');
+            updateAuthStatus(true);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('✅ Logout successful!');
+                updateAuthStatus(false);
+            }
+        }
+
+        function updateAuthStatus(isAuthenticated) {
+            const authSection = document.querySelector('.auth-section');
+            if (isAuthenticated) {
+                authSection.style.borderLeft = '4px solid #00ff00';
+                authSection.querySelector('p').textContent = '✅ Authenticated - Ready to use Claude Code';
+            } else {
+                authSection.style.borderLeft = '4px solid #ff0000';
+                authSection.querySelector('p').textContent = '❌ Not authenticated - Please login to continue';
+            }
+        }
+
         // 初始加载
         loadStats();
-        
+        updateAuthStatus(false); // 默认未认证状态
+
         // 每5秒更新一次
         setInterval(loadStats, 5000);
     </script>

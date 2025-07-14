@@ -18,11 +18,13 @@ pub mod network;
 pub mod plugins;
 pub mod process;
 pub mod refactor;
+pub mod security;
 pub mod steering;
 pub mod streaming;
 pub mod tools;
 pub mod ui;
 pub mod watcher;
+pub mod web;
 
 #[cfg(feature = "image-processing")]
 pub mod image_processing;

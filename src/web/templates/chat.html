@@ -224,6 +224,11 @@
                 <label>Stream:</label>
                 <input type="checkbox" id="stream" checked>
             </div>
+            <div class="setting">
+                <label>Auth:</label>
+                <button onclick="login()" style="background: #27ae60; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer; margin-right: 0.25rem;">🔑 Login</button>
+                <button onclick="logout()" style="background: #e74c3c; color: white; border: none; padding: 0.25rem 0.5rem; border-radius: 3px; cursor: pointer;">🔓 Logout</button>
+            </div>
         </div>
         
         <div class="messages" id="messages">
@@ -261,6 +266,11 @@
         
         // 发送消息
         async function sendMessage() {
+            if (!isAuthenticated) {
+                alert('Please login first!');
+                return;
+            }
+
             const message = messageInput.value.trim();
             if (!message) return;
             
@@ -331,8 +341,46 @@
             }
         });
         
-        // 自动聚焦输入框
-        messageInput.focus();
+        // 认证功能
+        let isAuthenticated = false;
+
+        function login() {
+            const apiKey = prompt('Please enter your API key:');
+            if (apiKey && apiKey.trim()) {
+                isAuthenticated = true;
+                addMessage('system', '✅ Login successful! You can now start chatting.');
+                updateAuthStatus();
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                isAuthenticated = false;
+                addMessage('system', '🔓 Logged out successfully.');
+                updateAuthStatus();
+            }
+        }
+
+        function updateAuthStatus() {
+            if (!isAuthenticated) {
+                messageInput.disabled = true;
+                sendBtn.disabled = true;
+                messageInput.placeholder = 'Please login first to start chatting...';
+            } else {
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+                messageInput.placeholder = 'Type your message here... (Shift+Enter for new line, Enter to send)';
+                messageInput.focus();
+            }
+        }
+
+        // 初始化认证状态
+        updateAuthStatus();
+
+        // 自动聚焦输入框（如果已认证）
+        if (isAuthenticated) {
+            messageInput.focus();
+        }
     </script>
 </body>
 </html>

@@ -201,6 +201,9 @@ async fn handle_command(
         Commands::Ui { port, host, open } => {
             handle_ui_command(port, host, open).await?;
         }
+        Commands::Tui => {
+            handle_tui_command().await?;
+        }
 
         #[cfg(feature = "web-server")]
         Commands::Serve { port, host, static_dir, no_cors, no_compression } => {
@@ -3377,6 +3380,24 @@ async fn handle_ui_command(port: u16, host: String, open_browser: bool) -> Resul
     println!("  • Settings and configuration");
     println!("  • Real-time collaboration");
 
+    Ok(())
+}
+
+/// 处理 TUI 命令
+async fn handle_tui_command() -> Result<()> {
+    use crate::ui::terminal_app::TerminalApp;
+
+    println!("🖥️ Starting Claude Code Terminal UI...");
+    println!("Press 'q' to quit, 'h' for help");
+
+    let mut app = TerminalApp::new();
+
+    if let Err(e) = app.run().await {
+        eprintln!("❌ Terminal UI error: {}", e);
+        return Err(e);
+    }
+
+    println!("👋 Terminal UI closed successfully!");
     Ok(())
 }
 

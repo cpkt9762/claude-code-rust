@@ -1,6 +1,8 @@
 //! 基础终端交互模块
-//! 
+//!
 //! 实现基础的终端UI和用户交互功能
+
+pub mod terminal_app;
 
 use crossterm::{
     cursor,

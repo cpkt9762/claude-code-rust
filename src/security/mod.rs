@@ -1,10 +1,10 @@
 use crate::error::{ClaudeError, Result};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::sync::RwLock;
 use std::sync::Arc;
-use tracing::{info, warn, error, debug};
+use tracing::info;
 
 /// 安全管理器
 pub struct SecurityManager {
@@ -590,5 +590,104 @@ impl TotpManager {
         } else {
             Err(ClaudeError::config_error("Invalid TOTP code"))
         }
+    }
+}
+
+// 为AuthenticationManager添加新的方法
+impl AuthenticationManager {
+    /// 保存API密钥
+    pub async fn save_api_key(&self, provider: &str, api_key: &str) -> Result<()> {
+        use std::fs;
+        use std::path::PathBuf;
+
+        // 创建配置目录
+        let config_dir = dirs::config_dir()
+            .ok_or_else(|| ClaudeError::General("Cannot find config directory".to_string()))?
+            .join("claude-rust");
+
+        fs::create_dir_all(&config_dir)
+            .map_err(|e| ClaudeError::General(format!("Failed to create config directory: {}", e)))?;
+
+        // 加密API密钥
+        let encrypted_key = self.encrypt_api_key(api_key)?;
+
+        // 保存到文件
+        let key_file = config_dir.join(format!("{}_api_key.enc", provider));
+        fs::write(&key_file, encrypted_key)
+            .map_err(|e| ClaudeError::General(format!("Failed to save API key: {}", e)))?;
+
+        info!("API key saved for provider: {}", provider);
+        Ok(())
+    }
+
+    /// 保存OAuth令牌
+    pub async fn save_oauth_token(&self, provider: &str, token: &str) -> Result<()> {
+        use std::fs;
+        use std::path::PathBuf;
+
+        let config_dir = dirs::config_dir()
+            .ok_or_else(|| ClaudeError::General("Cannot find config directory".to_string()))?
+            .join("claude-rust");
+
+        fs::create_dir_all(&config_dir)
+            .map_err(|e| ClaudeError::General(format!("Failed to create config directory: {}", e)))?;
+
+        // 加密OAuth令牌
+        let encrypted_token = self.encrypt_api_key(token)?;
+
+        // 保存到文件
+        let token_file = config_dir.join(format!("{}_oauth_token.enc", provider));
+        fs::write(&token_file, encrypted_token)
+            .map_err(|e| ClaudeError::General(format!("Failed to save OAuth token: {}", e)))?;
+
+        info!("OAuth token saved for provider: {}", provider);
+        Ok(())
+    }
+
+    /// 加密API密钥
+    fn encrypt_api_key(&self, api_key: &str) -> Result<Vec<u8>> {
+        // 简单的XOR加密（生产环境应使用更强的加密）
+        let key = b"claude-rust-secret-key-2024";
+        let mut encrypted = Vec::new();
+
+        for (i, byte) in api_key.bytes().enumerate() {
+            encrypted.push(byte ^ key[i % key.len()]);
+        }
+
+        Ok(encrypted)
+    }
+
+    /// 读取API密钥
+    pub async fn load_api_key(&self, provider: &str) -> Result<Option<String>> {
+        use std::fs;
+
+        let config_dir = dirs::config_dir()
+            .ok_or_else(|| ClaudeError::General("Cannot find config directory".to_string()))?
+            .join("claude-rust");
+
+        let key_file = config_dir.join(format!("{}_api_key.enc", provider));
+
+        if !key_file.exists() {
+            return Ok(None);
+        }
+
+        let encrypted_data = fs::read(&key_file)
+            .map_err(|e| ClaudeError::General(format!("Failed to read API key: {}", e)))?;
+
+        let decrypted_key = self.decrypt_api_key(&encrypted_data)?;
+        Ok(Some(decrypted_key))
+    }
+
+    /// 解密API密钥
+    fn decrypt_api_key(&self, encrypted_data: &[u8]) -> Result<String> {
+        let key = b"claude-rust-secret-key-2024";
+        let mut decrypted = Vec::new();
+
+        for (i, byte) in encrypted_data.iter().enumerate() {
+            decrypted.push(byte ^ key[i % key.len()]);
+        }
+
+        String::from_utf8(decrypted)
+            .map_err(|e| ClaudeError::General(format!("Failed to decrypt API key: {}", e)))
     }
 }

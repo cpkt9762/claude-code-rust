@@ -15,6 +15,10 @@ path = "src/lib.rs"
 name = "claude-rust"
 path = "src/main.rs"
 
+[[example]]
+name = "terminal_ui_demo"
+path = "examples/terminal_ui_demo.rs"
+
 [dependencies]
 # CLI 解析
 clap = { version = "4.4", features = ["derive", "env"] }
@@ -57,7 +61,8 @@ uuid = { version = "1.0", features = ["v4", "serde"] }
 
 # 终端相关
 crossterm = "0.27"
-ratatui = "0.24"
+ratatui = "0.26"
+tui-input = "0.8"
 
 # 图像处理 (为后续阶段准备)
 image = { version = "0.24", optional = true }
