@@ -803,6 +803,9 @@ impl ClaudeCodeCli {
         if cli.command.is_none() {
             if let Some(ref prompt) = cli.prompt {
                 return self.handle_interactive_prompt(prompt.clone()).await;
+            } else {
+                // 没有提示且没有子命令时，默认启动TUI界面
+                return self.handle_tui_command().await;
             }
         }
 
@@ -888,8 +891,8 @@ impl ClaudeCodeCli {
                 self.handle_tui_command().await
             },
             None => {
-                // 默认进入交互模式
-                self.handle_interactive_command().await
+                // 这种情况不应该发生，因为默认行为已经在上面处理了
+                unreachable!("Default behavior should be handled above")
             },
             _ => {
                 info!("Command not yet implemented");
