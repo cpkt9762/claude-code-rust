@@ -1,0 +1,38 @@
+# 开发环境 Dockerfile for Claude Code Rust
+
+FROM rust:1.75
+
+# 安装开发工具和依赖
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    ca-certificates \
+    git \
+    curl \
+    vim \
+    htop \
+    && rm -rf /var/lib/apt/lists/*
+
+# 安装 Rust 开发工具
+RUN rustup component add rustfmt clippy llvm-tools-preview && \
+    cargo install cargo-watch cargo-audit cargo-llvm-cov criterion
+
+# 设置工作目录
+WORKDIR /app
+
+# 创建开发用户
+RUN useradd -m -u 1000 dev && \
+    chown -R dev:dev /app
+
+# 切换到开发用户
+USER dev
+
+# 设置环境变量
+ENV RUST_LOG=debug
+ENV CARGO_TARGET_DIR=/app/target
+
+# 暴露端口
+EXPOSE 8080 9090
+
+# 默认命令
+CMD ["cargo", "run", "--", "--help"]

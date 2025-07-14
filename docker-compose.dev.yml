@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  claude-code-rust-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: claude-code-rust-dev
+    environment:
+      - RUST_LOG=debug
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - CLAUDE_CONFIG_DIR=/app/config
+      - CARGO_TARGET_DIR=/app/target
+    volumes:
+      # 挂载源代码用于开发
+      - .:/app
+      - cargo_cache:/usr/local/cargo/registry
+      - target_cache:/app/target
+    ports:
+      - "8080:8080"
+      - "9090:9090"  # 调试端口
+    working_dir: /app
+    command: cargo watch -x 'run -- --debug'
+    networks:
+      - claude-dev-network
+
+  # 开发数据库
+  postgres-dev:
+    image: postgres:15-alpine
+    container_name: claude-postgres-dev
+    environment:
+      - POSTGRES_DB=claude_code_dev
+      - POSTGRES_USER=claude_dev
+      - POSTGRES_PASSWORD=dev_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - claude-dev-network
+
+  # 开发 Redis
+  redis-dev:
+    image: redis:7-alpine
+    container_name: claude-redis-dev
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - claude-dev-network
+
+  # 测试运行器
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: claude-test-runner
+    environment:
+      - RUST_LOG=debug
+      - CARGO_TARGET_DIR=/app/target
+    volumes:
+      - .:/app
+      - cargo_cache:/usr/local/cargo/registry
+      - target_cache:/app/target
+    working_dir: /app
+    command: cargo watch -x test
+    networks:
+      - claude-dev-network
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:
+  cargo_cache:
+  target_cache:
+
+networks:
+  claude-dev-network:
+    driver: bridge
