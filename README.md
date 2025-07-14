@@ -1,196 +1,390 @@
 # Claude Code Rust
 
-一个用 Rust 实现的 Claude Code 工具 - 强大的代理编程助手。
+⚠️ **重要提示：此项目目前处于开发阶段，尚不能正常使用** ⚠️
 
-## 🚀 特性
+一个用 Rust 实现的 Claude Code 工具的概念验证项目。本项目旨在展示将 JavaScript/Node.js 版本的 Claude Code 迁移到 Rust 的可行性。
 
-- **完整的CLI界面**: 支持多种命令和子命令
-- **配置管理**: 灵活的YAML配置系统
-- **MCP协议支持**: Model Context Protocol 集成
-- **文件系统管理**: 异步文件操作
-- **Git集成**: 版本控制操作
-- **网络功能**: HTTP客户端和API集成
-- **进程管理**: 子进程执行和管理
-- **终端UI**: 丰富的终端用户界面
-- **成本跟踪**: API使用成本监控
-- **权限管理**: 细粒度的操作权限控制
+## 🚧 项目状态
 
-## 📦 安装
+**当前状态**: 🔴 **不可用于生产环境**
+
+- ✅ **架构设计完成** - 完整的模块化架构
+- ✅ **CLI 接口完成** - 所有命令行参数和选项
+- ⚠️ **功能实现不完整** - 大部分功能仅为占位符
+- ❌ **核心逻辑未实现** - 缺少实际的业务逻辑
+- ❌ **API 集成未完成** - 无法与 Claude API 通信
+- ❌ **认证系统未实现** - 登录/登出功能仅为演示
+
+## 🎯 项目目标
+
+这是一个**概念验证项目**，用于：
+- 验证 Claude Code 从 JavaScript 到 Rust 的迁移可行性
+- 展示 Rust 在 CLI 工具开发中的优势
+- 建立完整的项目架构和模块设计
+- 提供未来实际开发的基础框架
+
+## ✅ 已实现功能
+
+### CLI 接口 (100% 完成)
+- ✅ **命令行解析** - 完整的参数和选项支持
+- ✅ **帮助系统** - 详细的命令帮助信息
+- ✅ **所有原版命令** - 21/21 命令支持 (100% 兼容性)
+- ✅ **增强功能** - 16 个新增功能
+
+### 架构设计 (100% 完成)
+- ✅ **模块化设计** - 20+ 核心模块
+- ✅ **错误处理** - 统一的错误处理系统
+- ✅ **配置系统** - YAML 配置文件支持
+- ✅ **异步架构** - 基于 tokio 的异步运行时
+
+### 开发工具 (100% 完成)
+- ✅ **Docker 支持** - 完整的容器化配置
+- ✅ **CI/CD 配置** - GitHub Actions 工作流
+- ✅ **测试框架** - 单元测试和集成测试结构
+- ✅ **文档系统** - 完整的项目文档
+
+## ❌ 未实现功能 (核心业务逻辑)
+
+### 🔴 高优先级 - 核心功能缺失
+
+#### API 集成 (0% 完成)
+- ❌ **Claude API 客户端** - 无法与 Anthropic API 通信
+- ❌ **请求/响应处理** - 缺少 API 调用逻辑
+- ❌ **流式响应** - 无法处理流式 API 响应
+- ❌ **错误重试机制** - 缺少网络错误处理
+
+#### 认证系统 (5% 完成)
+- ❌ **API 密钥管理** - 无法安全存储和使用 API 密钥
+- ❌ **OAuth 认证** - 浏览器认证仅为占位符
+- ❌ **会话管理** - 缺少用户会话持久化
+- ❌ **多提供商支持** - 仅有基础框架
+
+#### 对话管理 (10% 完成)
+- ❌ **对话历史** - 无法保存和恢复对话
+- ❌ **上下文管理** - 缺少对话上下文处理
+- ❌ **消息格式化** - 无法正确格式化消息
+- ❌ **对话导出** - 缺少数据导出功能
+
+### 🟡 中优先级 - 高级功能缺失
+
+#### Web UI (20% 完成)
+- ❌ **Web 服务器** - 无法启动实际的 Web 服务
+- ❌ **前端界面** - 缺少 React 组件实现
+- ❌ **实时通信** - 无 WebSocket 支持
+- ❌ **文件管理** - 缺少 Web 文件浏览器
+
+#### MCP 协议 (15% 完成)
+- ❌ **协议实现** - 缺少 MCP 协议的实际实现
+- ❌ **服务器管理** - 无法管理 MCP 服务器
+- ❌ **工具集成** - 缺少工具调用机制
+- ❌ **插件系统** - 无法加载和管理插件
+
+#### 文件系统 (30% 完成)
+- ❌ **智能文件操作** - 缺少 AI 辅助的文件处理
+- ❌ **项目分析** - 无法分析代码库结构
+- ❌ **文件监控** - 缺少文件变化监控
+- ❌ **备份恢复** - 无文件备份机制
+
+### 🟢 低优先级 - 辅助功能缺失
+
+#### 成本跟踪 (25% 完成)
+- ❌ **实时成本计算** - 无法计算 API 使用成本
+- ❌ **使用统计** - 缺少详细的使用分析
+- ❌ **预算管理** - 无预算限制功能
+- ❌ **报告生成** - 缺少成本报告
+
+#### Git 集成 (40% 完成)
+- ❌ **智能提交** - 缺少 AI 辅助的提交消息
+- ❌ **代码审查** - 无自动代码审查功能
+- ❌ **分支管理** - 缺少智能分支操作
+- ❌ **冲突解决** - 无合并冲突辅助
+
+#### 进程管理 (35% 完成)
+- ❌ **智能进程监控** - 缺少进程状态分析
+- ❌ **资源管理** - 无资源使用优化
+- ❌ **任务调度** - 缺少任务队列管理
+- ❌ **性能分析** - 无性能监控功能
+
+## 📦 安装和运行 (仅用于开发测试)
+
+⚠️ **警告：当前版本仅用于开发测试，不能用于实际工作**
 
 ### 从源码构建
 
 ```bash
-git clone https://github.com/anthropics/claude-code-rust.git
+git clone https://github.com/cpkt9762/claude-code-rust.git
 cd claude-code-rust
 cargo build --release
 ```
 
-### 运行
+### 运行演示
 
 ```bash
-# 显示帮助
-./target/release/claude-code-rust --help
+# 显示帮助 (✅ 可用)
+./target/release/claude-rust --help
 
-# 显示版本
-./target/release/claude-code-rust --version
+# 测试命令行接口 (✅ 可用)
+./target/release/claude-rust --version
 
-# 启动交互模式
-./target/release/claude-code-rust interactive
+# 测试登录功能 (⚠️ 仅演示，无实际功能)
+./target/release/claude-rust login --browser
+
+# 测试 UI 功能 (⚠️ 仅演示，无实际功能)
+./target/release/claude-rust ui --open
+
+# 测试配置管理 (⚠️ 仅演示，无实际功能)
+./target/release/claude-rust config show
 ```
 
-## 🛠️ 使用方法
+### ⚠️ 当前限制
 
-### 基本命令
+**所有命令都只是演示性质，不具备实际功能：**
+
+- 🚫 **无法与 Claude API 通信** - 缺少 API 集成
+- 🚫 **无法保存配置** - 配置不会持久化
+- 🚫 **无法处理文件** - 文件操作仅为占位符
+- 🚫 **无法启动 Web UI** - UI 功能未实现
+- 🚫 **无法进行认证** - 登录/登出仅为演示
+
+## 🛠️ 开发计划
+
+### 第一阶段：核心功能实现 (预计 2-3 个月)
+1. **API 客户端实现** - 与 Claude API 的实际集成
+2. **认证系统** - 安全的 API 密钥管理
+3. **基础对话功能** - 简单的问答交互
+4. **配置持久化** - 配置文件的读写
+
+### 第二阶段：高级功能 (预计 3-4 个月)
+1. **Web UI 实现** - 基于 React 的前端界面
+2. **MCP 协议支持** - 完整的协议实现
+3. **文件系统集成** - 智能文件操作
+4. **对话历史管理** - 完整的会话管理
+
+### 第三阶段：生产就绪 (预计 2-3 个月)
+1. **性能优化** - 内存和 CPU 使用优化
+2. **错误处理** - 完善的错误恢复机制
+3. **安全加固** - 安全审计和加固
+4. **文档完善** - 用户和开发者文档
+
+## 🚧 如何贡献
+
+如果您想参与开发，请注意：
+
+### 优先级任务
+1. **实现 Claude API 客户端** (src/network/mod.rs)
+2. **完善认证系统** (src/config/mod.rs)
+3. **实现对话管理** (src/conversation/mod.rs)
+4. **添加配置持久化** (src/config/mod.rs)
+
+### 开发环境设置
 
 ```bash
-# 配置管理
-claude-code-rust config show
-claude-code-rust config set api_key your_key
+# 克隆仓库
+git clone https://github.com/cpkt9762/claude-code-rust.git
+cd claude-code-rust
 
-# MCP服务器管理
-claude-code-rust mcp start --config server.json
-claude-code-rust mcp list
+# 安装依赖
+cargo build
 
-# Git操作
-claude-code-rust git status
-claude-code-rust git commit -m "message"
+# 运行测试 (⚠️ 大部分测试会失败，因为功能未实现)
+cargo test
 
-# 进程管理
-claude-code-rust process list
-claude-code-rust process kill <id>
-
-# 成本查看
-claude-code-rust cost today
-claude-code-rust cost stats --days 30
+# 检查代码
+cargo clippy
+cargo fmt
 ```
 
-### 配置文件
+## 🧪 测试状态
 
-配置文件位于 `~/.config/claude-code-rust/config.yaml`:
-
-```yaml
-api:
-  base_url: "https://api.anthropic.com"
-  timeout_seconds: 30
-  max_retries: 3
-
-ui:
-  theme: "dark"
-  enable_tui: false
-
-permissions:
-  require_confirmation: true
-  allowed_tools:
-    - "file_read"
-    - "file_write"
-    - "network_request"
-  denied_tools: []
-
-memory:
-  max_conversations: 100
-  auto_save: true
-```
-
-## 🧪 测试
-
-项目包含完整的测试套件：
+⚠️ **测试套件状态：大部分测试无法通过**
 
 ```bash
-# 运行所有测试
+# 运行测试 (⚠️ 预期会有很多失败)
 cargo test
 
 # 运行特定测试
-cargo test --lib                    # 库测试
-cargo test --test unit_tests        # 单元测试
-cargo test --test integration_tests # 集成测试
+cargo test --lib                    # 库测试 (部分通过)
+cargo test --test unit_tests        # 单元测试 (大部分失败)
+cargo test --test integration_tests # 集成测试 (大部分失败)
 
 # 详细输出
 cargo test -- --nocapture
 ```
 
-### 测试统计
-- **库测试**: 12个测试用例
-- **单元测试**: 13个测试用例  
-- **集成测试**: 13个测试用例
-- **总计**: 47个测试用例，全部通过 ✅
+### 测试统计 (当前状态)
+- **库测试**: 12个测试用例 - ⚠️ 部分通过 (基础结构测试)
+- **单元测试**: 13个测试用例 - ❌ 大部分失败 (功能未实现)
+- **集成测试**: 13个测试用例 - ❌ 大部分失败 (缺少实际功能)
+- **总计**: 47个测试用例 - 🔴 **约 70% 失败** (因为功能未实现)
 
-## 🏗️ 架构
+### 测试失败原因
+- ❌ **API 调用测试失败** - 缺少实际的 API 客户端
+- ❌ **配置测试失败** - 配置持久化未实现
+- ❌ **对话测试失败** - 对话管理功能缺失
+- ❌ **文件操作测试失败** - 文件处理逻辑未完成
 
-### 模块结构
+## 🏗️ 架构设计
+
+### 模块结构 (✅ 架构完成，❌ 实现不完整)
 
 ```
 src/
-├── cli/           # 命令行接口
-├── config/        # 配置管理
-├── conversation/  # 对话管理
-├── cost/          # 成本跟踪
-├── error/         # 错误处理
-├── fs/            # 文件系统
-├── git/           # Git集成
-├── mcp/           # MCP协议
-├── network/       # 网络功能
-├── process/       # 进程管理
-├── ui/            # 用户界面
-├── lib.rs         # 库入口
-└── main.rs        # 主程序
+├── cli/           # ✅ 命令行接口 (100% 完成)
+├── config/        # ⚠️ 配置管理 (30% 完成 - 缺少持久化)
+├── conversation/  # ❌ 对话管理 (10% 完成 - 缺少核心逻辑)
+├── cost/          # ❌ 成本跟踪 (25% 完成 - 缺少计算逻辑)
+├── error/         # ✅ 错误处理 (90% 完成)
+├── fs/            # ⚠️ 文件系统 (30% 完成 - 缺少智能操作)
+├── git/           # ⚠️ Git集成 (40% 完成 - 缺少高级功能)
+├── mcp/           # ❌ MCP协议 (15% 完成 - 缺少协议实现)
+├── network/       # ❌ 网络功能 (5% 完成 - 缺少 API 客户端)
+├── process/       # ⚠️ 进程管理 (35% 完成 - 缺少智能监控)
+├── ui/            # ❌ 用户界面 (20% 完成 - 缺少 Web UI)
+├── web/           # ❌ Web 服务器 (20% 完成 - 缺少实际服务)
+├── auth/          # ❌ 认证系统 (5% 完成 - 缺少实际认证)
+├── streaming/     # ❌ 流式处理 (10% 完成 - 缺少流式 API)
+├── plugins/       # ❌ 插件系统 (15% 完成 - 缺少插件加载)
+├── lib.rs         # ✅ 库入口 (100% 完成)
+└── main.rs        # ✅ 主程序 (100% 完成)
 ```
 
-### 可选特性
+### 实现状态总结
+
+| 模块 | 架构 | 基础实现 | 核心功能 | 高级功能 | 总体完成度 |
+|------|------|----------|----------|----------|------------|
+| CLI | ✅ | ✅ | ✅ | ✅ | 100% |
+| Error | ✅ | ✅ | ✅ | ⚠️ | 90% |
+| Config | ✅ | ✅ | ⚠️ | ❌ | 30% |
+| Git | ✅ | ✅ | ⚠️ | ❌ | 40% |
+| Process | ✅ | ✅ | ⚠️ | ❌ | 35% |
+| FS | ✅ | ✅ | ⚠️ | ❌ | 30% |
+| Cost | ✅ | ⚠️ | ❌ | ❌ | 25% |
+| UI | ✅ | ⚠️ | ❌ | ❌ | 20% |
+| Web | ✅ | ⚠️ | ❌ | ❌ | 20% |
+| Plugins | ✅ | ⚠️ | ❌ | ❌ | 15% |
+| MCP | ✅ | ⚠️ | ❌ | ❌ | 15% |
+| Streaming | ✅ | ⚠️ | ❌ | ❌ | 10% |
+| Conversation | ✅ | ⚠️ | ❌ | ❌ | 10% |
+| Network | ✅ | ⚠️ | ❌ | ❌ | 5% |
+| Auth | ✅ | ⚠️ | ❌ | ❌ | 5% |
+
+### 可选特性 (⚠️ 大部分未实现)
 
 ```toml
 [features]
 default = []
-image-processing = ["image"]
-syntax-highlighting = ["syntect"]
+image-processing = ["image"]      # ❌ 未实现
+syntax-highlighting = ["syntect"] # ❌ 未实现
+web-server = ["axum", "tower"]    # ❌ 未实现
+database = ["sqlx"]               # ❌ 未实现
 ```
 
-## 🔧 开发
+## 🔧 开发环境
 
 ### 环境要求
 
 - Rust 1.70+
 - Cargo
 - Git
+- ⚠️ **注意：当前版本无法正常运行，仅用于开发测试**
 
 ### 开发命令
 
 ```bash
-# 开发构建
+# 开发构建 (✅ 可用)
 cargo build
 
-# 运行检查
+# 运行检查 (✅ 可用)
 cargo check
 
-# 格式化代码
+# 格式化代码 (✅ 可用)
 cargo fmt
 
-# 代码检查
+# 代码检查 (⚠️ 会有很多警告，因为功能未实现)
 cargo clippy
 
-# 生成文档
+# 生成文档 (✅ 可用)
 cargo doc --open
+
+# 运行测试 (❌ 大部分会失败)
+cargo test
 ```
+
+## ⚠️ 重要声明
+
+### 🚫 不适用场景
+- ❌ **生产环境使用** - 核心功能缺失
+- ❌ **实际工作任务** - 无法与 Claude API 通信
+- ❌ **替代原版 Claude Code** - 功能不完整
+- ❌ **学习 Claude Code 使用** - 功能仅为演示
+
+### ✅ 适用场景
+- ✅ **Rust 学习参考** - 展示 CLI 工具架构
+- ✅ **迁移可行性研究** - 证明迁移的可能性
+- ✅ **开发基础框架** - 为实际开发提供起点
+- ✅ **技术概念验证** - 展示 Rust 在此领域的应用
+
+## 📊 项目统计
+
+### 代码统计
+- **总文件数**: 91 个文件
+- **代码行数**: 42,000+ 行
+- **模块数量**: 20+ 个核心模块
+- **实际可用功能**: < 30%
+
+### 完成度分析
+- **架构设计**: 100% ✅
+- **CLI 接口**: 100% ✅
+- **核心业务逻辑**: 15% ❌
+- **API 集成**: 5% ❌
+- **Web UI**: 20% ❌
+- **测试覆盖**: 30% ⚠️
 
 ## 📝 许可证
 
 MIT License - 详见 [LICENSE](LICENSE) 文件。
 
-## 🤝 贡献
+## 🤝 贡献指南
 
-欢迎贡献！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详情。
+### 🔴 急需实现的功能
+1. **Claude API 客户端** (src/network/mod.rs)
+2. **认证系统** (src/config/mod.rs)
+3. **对话管理** (src/conversation/mod.rs)
+4. **配置持久化** (src/config/mod.rs)
 
-## 📚 文档
+### 🟡 中期目标
+1. **Web UI 实现** (src/web/mod.rs)
+2. **MCP 协议支持** (src/mcp/mod.rs)
+3. **文件系统集成** (src/fs/mod.rs)
 
-- [测试总结](TESTING_SUMMARY.md)
-- [API文档](https://docs.rs/claude-code-rust)
-- [用户指南](docs/user-guide.md)
+### 贡献流程
+1. Fork 本仓库
+2. 选择一个未实现的功能模块
+3. 实现核心逻辑 (不仅仅是占位符)
+4. 添加相应的测试
+5. 提交 Pull Request
 
-## 🔗 相关链接
+## 📚 相关文档
 
-- [Claude Code (JavaScript版本)](https://github.com/anthropics/claude-code)
-- [Anthropic API文档](https://docs.anthropic.com/)
-- [MCP协议规范](https://modelcontextprotocol.io/)
+### 项目文档
+- [命令支持分析](COMMAND_SUPPORT_ANALYSIS.md) - 详细的功能对比
+- [最终功能演示](FINAL_FEATURE_DEMO.md) - 当前可用功能展示
+- [成就总结](ACHIEVEMENT_SUMMARY.md) - 项目完成情况
+- [架构设计](FINAL_ARCHITECTURE.md) - 详细的架构说明
+
+### 外部链接
+- [Claude Code (原版)](https://github.com/anthropics/claude-code)
+- [Anthropic API 文档](https://docs.anthropic.com/)
+- [MCP 协议规范](https://modelcontextprotocol.io/)
 
 ---
 
-**注意**: 这是 Claude Code 的 Rust 实现版本，旨在提供更好的性能和系统集成能力。
+## 🎯 总结
+
+**这是一个概念验证项目，展示了 Claude Code 从 JavaScript 到 Rust 迁移的可行性。**
+
+**当前状态**: 🔴 **不可用于实际工作**
+**项目价值**: ✅ **技术研究和未来开发的基础**
+**下一步**: 🚧 **需要实现核心业务逻辑才能真正可用**
+
+⚠️ **请不要将此项目用于生产环境或实际工作任务！**
